@@ -151,7 +151,7 @@ def display_weapon_card(weapon: Dict[str, Any]) -> None:
     }
 
     color = category_colors.get(weapon["category"], "#667eea")
-    
+
     # HTMLサニタイゼーション
     safe_name = html.escape(str(weapon.get("name", "不明")))
     safe_category = html.escape(str(weapon.get("category", "不明")))

@@ -1,6 +1,8 @@
+import html
 import json
+import os
 import random
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import requests
 import streamlit as st
@@ -71,21 +73,30 @@ st.markdown(
 
 
 class WeaponService:
-    def __init__(self, base_url: str = "http://mockoon:3000"):
-        self.base_url = base_url
+    def __init__(self, base_url: Optional[str] = None):
+        self.base_url = base_url or os.getenv("MOCKOON_API_URL", "http://mockoon:3000")
 
-    def get_random_weapon(self) -> Dict[str, Any]:
+    def get_random_weapon(self) -> Optional[Dict[str, Any]]:
         """Mockoon APIのrandom-weaponエンドポイントから1つの武器を取得"""
         try:
             response = requests.get(f"{self.base_url}/random-weapon", timeout=5)
-            if response.status_code == 200:
-                weapon_data = response.json()
-                return weapon_data
-            else:
-                st.error(f"API エラー: {response.status_code}")
-                return None
+            response.raise_for_status()
+            weapon_data = response.json()
+            return weapon_data
+        except requests.exceptions.Timeout:
+            st.error("API接続がタイムアウトしました")
+            return None
+        except requests.exceptions.ConnectionError:
+            st.error("APIサーバーに接続できませんでした")
+            return None
+        except requests.exceptions.HTTPError as e:
+            st.error(f"HTTP エラー: {e.response.status_code}")
+            return None
         except requests.exceptions.RequestException as e:
             st.error(f"API接続エラー: {str(e)}")
+            return None
+        except (json.JSONDecodeError, ValueError) as e:
+            st.error(f"レスポンス解析エラー: {str(e)}")
             return None
 
     def get_random_weapons(self, count: int = 8) -> List[Dict[str, Any]]:
@@ -124,7 +135,7 @@ class WeaponService:
         return weapons
 
 
-def display_weapon_card(weapon: Dict[str, Any]):
+def display_weapon_card(weapon: Dict[str, Any]) -> None:
     """武器カードを表示"""
     category_colors = {
         "シューター": "#ff6b6b",
@@ -140,14 +151,20 @@ def display_weapon_card(weapon: Dict[str, Any]):
     }
 
     color = category_colors.get(weapon["category"], "#667eea")
+    
+    # HTMLサニタイゼーション
+    safe_name = html.escape(str(weapon.get("name", "不明")))
+    safe_category = html.escape(str(weapon.get("category", "不明")))
+    safe_sub_weapon = html.escape(str(weapon.get("sub_weapon", "不明")))
+    safe_special_weapon = html.escape(str(weapon.get("special_weapon", "不明")))
 
     st.markdown(
         f"""
     <div class="weapon-card" style="background: linear-gradient(135deg, {color} 0%, #764ba2 100%);">
-        <div class="weapon-name">{weapon["name"]}</div>
-        <div class="weapon-category">{weapon["category"]}</div>
-        <div class="weapon-detail">サブ: {weapon["sub_weapon"]}</div>
-        <div class="weapon-detail">スペシャル: {weapon["special_weapon"]}</div>
+        <div class="weapon-name">{safe_name}</div>
+        <div class="weapon-category">{safe_category}</div>
+        <div class="weapon-detail">サブ: {safe_sub_weapon}</div>
+        <div class="weapon-detail">スペシャル: {safe_special_weapon}</div>
     </div>
     """,
         unsafe_allow_html=True,

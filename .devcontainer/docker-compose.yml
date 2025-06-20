@@ -10,7 +10,7 @@ services:
     command: sleep infinity
     environment:
       - NODE_ENV=development
-      - NEXT_PUBLIC_API_URL=http://mockoon:3001
+      - MOCKOON_API_URL=http://mockoon:3000
     depends_on:
       - mockoon
     networks:

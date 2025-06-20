@@ -23,9 +23,6 @@ COPY requirements.txt /workspace/requirements.txt
 # Install Python dependencies
 RUN pip3 install -r requirements.txt
 
-# Create empty package.json for future use
-RUN echo '{}' > package.json
-
 # install playwright and its dependencies
 RUN pip install playwright \
     && python -m playwright install

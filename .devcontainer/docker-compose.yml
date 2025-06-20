@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ..:/workspace:cached
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+      - MOCKOON_API_URL=http://mockoon:3000
+    depends_on:
+      - mockoon
+    networks:
+      - dev-network
+
+  mockoon:
+    image: mockoon/cli:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mockoon:/data
+    command: ["--data", "/data/openapi.yaml"]
+    networks:
+      - dev-network
+
+networks:
+  dev-network:
+    driver: bridge

@@ -1,0 +1,28 @@
+{
+  "name": "Splatoon3 Random Front Python",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/workspace",
+  "forwardPorts": ["mockoon:3000", 8501],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.flake8",
+        "ms-python.mypy-type-checker",
+        "ms-python.pylint"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.flake8Enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.linting.mypyEnabled": true,
+        "python.analysis.typeCheckingMode": "basic",
+        "mypy.runUsingActiveInterpreter": true,
+        "flake8.args": ["--max-line-length=88", "--extend-ignore=E203,W503"]
+      }
+    }
+  },
+  "remoteUser": "vscode"
+}

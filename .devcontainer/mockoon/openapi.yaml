@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: Splatoon3 Random Weapon API
+  description: Splatoon3の武器をランダムに取得するAPIです。PostgreSQLデータベースから武器データをランダムに取得し、RESTful APIとして提供します。
+  version: 1.0.0
+  contact:
+    name: Splatoon3 Random Weapon API
+  license:
+    name: MIT
+
+servers:
+  - url: http://mockoon:3000
+    description: Development server
+
+paths:
+  /:
+    get:
+      summary: ルートエンドポイント
+      description: APIのルートエンドポイント（ヘルスチェック用）
+      operationId: root
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Hello World"
+                required:
+                  - message
+
+  /health:
+    get:
+      summary: ヘルスチェック
+      description: サービスの稼働状態を確認します
+      operationId: health_check
+      responses:
+        '200':
+          description: サービスが正常に稼働中
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                required:
+                  - status
+
+  /random-weapon:
+    get:
+      summary: ランダム武器取得
+      description: データベースからランダムにSplatoon3の武器を1つ取得します
+      operationId: get_random_weapon
+      responses:
+        '200':
+          description: 武器データの取得に成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weapon'
+        '404':
+          description: 武器が見つからない
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: string
+                    example: "No weapons found"
+                required:
+                  - detail
+
+components:
+  schemas:
+    Weapon:
+      type: object
+      description: Splatoon3の武器情報
+      properties:
+        id:
+          type: integer
+          description: 武器ID
+          example: 1
+        name:
+          type: string
+          description: 武器名
+          example: "スプラシューター"
+        category:
+          type: string
+          description: 武器カテゴリ
+          example: "シューター"
+        sub_weapon:
+          type: string
+          nullable: true
+          description: サブウェポン
+          example: "キューバンボム"
+        special_weapon:
+          type: string
+          nullable: true
+          description: スペシャルウェポン
+          example: "ウルトラショット"
+      required:
+        - id
+        - name
+        - category
+
+    Error:
+      type: object
+      description: エラーレスポンス
+      properties:
+        detail:
+          type: string
+          description: エラーの詳細
+          example: "No weapons found"
+      required:
+        - detail
+
+tags:
+  - name: health
+    description: ヘルスチェック関連のエンドポイント
+  - name: random-weapon
+    description: 武器をランダム取得するためのエンドポイント

@@ -23,6 +23,9 @@ COPY requirements.txt /workspace/requirements.txt
 # Install Python dependencies
 RUN pip3 install -r requirements.txt
 
+# Install Claude CLI globally
+RUN npm install -g @anthropic-ai/claude-cli
+
 # Create empty package.json for future use
 RUN echo '{}' > package.json
 

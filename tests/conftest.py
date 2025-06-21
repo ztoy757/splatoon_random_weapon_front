@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 
 @pytest.fixture(scope="session")
 def browser():
-    """Configure browser with environment-based settings"""
+    """環境変数に基づいてブラウザを設定"""
     headless = os.getenv("HEADLESS", "true").lower() == "true"
     
     with sync_playwright() as p:
@@ -16,7 +16,7 @@ def browser():
 
 @pytest.fixture(scope="function")
 def page(browser):
-    """Create a new page for each test"""
+    """各テスト用に新しいページを作成"""
     context = browser.new_context()
     page = context.new_page()
     yield page

@@ -1,35 +1,36 @@
-# End-to-End Tests
+# エンドツーエンドテスト
 
-This directory contains Playwright-based end-to-end tests for the Splatoon weapon generator.
+このディレクトリには、Splatoon武器ジェネレーター用のPlaywrightベースのエンドツーエンドテストが含まれています。
 
-## Prerequisites
+## 前提条件
 
-1. Install dependencies: `pip install -r requirements.txt`
-2. Install Playwright browsers: `python -m playwright install`
-3. Start the application: `streamlit run app.py` (or your main app file)
+1. 依存関係をインストール: `pip install -r requirements.txt`
+2. Playwrightブラウザをインストール: `python -m playwright install`
+3. アプリケーションを起動: `streamlit run app.py` （またはメインアプリファイル）
 
-## Running Tests
+## テストの実行
 
-### Run all e2e tests
+### 全てのe2eテストを実行
 ```bash
 pytest tests/e2e/
 ```
 
-### Run with visible browser (for debugging)
+### 表示可能なブラウザで実行（デバッグ用）
 ```bash
 HEADLESS=false pytest tests/e2e/
 ```
 
-### Run against different URL
+### 異なるURLに対して実行
 ```bash
-BASE_URL=http://localhost:3000 pytest tests/e2e/
+MOCKOON_API_URL=http://localhost:3000 pytest tests/e2e/
 ```
 
-## Environment Variables
+## 環境変数
 
-- `BASE_URL`: Application URL (default: http://localhost:8501)
-- `HEADLESS`: Browser headless mode (default: true)
+- `MOCKOON_API_URL`: アプリケーションURL（優先）
+- `BASE_URL`: アプリケーションURL（フォールバック、デフォルト: http://localhost:8501）
+- `HEADLESS`: ブラウザヘッドレスモード（デフォルト: true）
 
-## Test Evidence
+## テスト証跡
 
-Screenshots are automatically saved to the `evidence/` directory during test execution.
+テスト実行中にスクリーンショットが自動的に `evidence/` ディレクトリに保存されます。

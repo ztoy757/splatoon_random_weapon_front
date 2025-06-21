@@ -25,7 +25,8 @@ RUN pip3 install -r requirements.txt
 
 # install playwright and its dependencies
 RUN pip install playwright \
-    && python -m playwright install
+    && python -m playwright install \
+    && playwright install chrome
 
 # Install install claude-code CLI
 RUN npm install -g @anthropic-ai/claude-code

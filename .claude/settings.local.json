@@ -3,7 +3,11 @@
     "allow": [
       "Bash(find:*)",
       "Bash(ls:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(python -m pytest tests/e2e/test_weapon_generator.py -v)",
+      "Bash(pkill:*)",
+      "Bash(python -m pytest tests/e2e/test_weapon_generator.py::test_page_accessibility -v -s)"
     ],
     "deny": []
   }

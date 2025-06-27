@@ -1,30 +1,10 @@
-import os
 import re
 
 import pytest
 from playwright.sync_api import Page, expect
 
 
-@pytest.fixture(scope="session")
-def base_url():
-    """環境変数からベースURLを取得、デフォルトはStreamlitアプリのURL"""
-    return os.getenv("BASE_URL", "http://localhost:8501")
-
-
-@pytest.fixture(scope="session")
-def headless_mode():
-    """環境変数からヘッドレスモードを取得、デフォルトはTrue"""
-    return os.getenv("HEADLESS", "true").lower() == "true"
-
-
-@pytest.fixture(scope="session")
-def evidence_dir():
-    """スクリーンショット用の証跡ディレクトリを作成"""
-    evidence_path = "./evidence"
-    os.makedirs(evidence_path, exist_ok=True)
-    return evidence_path
-
-
+@pytest.mark.e2e
 def test_weapon_generator_basic_flow(page: Page, base_url: str, evidence_dir: str):
     """武器ジェネレーターの基本機能をテスト"""
     # アプリケーションにアクセス
@@ -55,6 +35,7 @@ def test_weapon_generator_basic_flow(page: Page, base_url: str, evidence_dir: st
     page.screenshot(path=f"{evidence_dir}/03_weapons_generated.png")
 
 
+@pytest.mark.e2e
 def test_weapon_generator_multiple_generations(
     page: Page, base_url: str, evidence_dir: str
 ):
@@ -75,6 +56,7 @@ def test_weapon_generator_multiple_generations(
     expect(page.get_by_text(re.compile(r"ランダム武器を生成"))).to_be_visible()
 
 
+@pytest.mark.e2e
 def test_page_accessibility(page: Page, base_url: str):
     """基本的なアクセシビリティテスト"""
     page.goto(base_url)

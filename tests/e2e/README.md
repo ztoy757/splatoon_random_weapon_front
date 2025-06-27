@@ -6,7 +6,7 @@
 
 1. 依存関係をインストール: `pip install -r requirements.txt`
 2. Playwrightブラウザをインストール: `python -m playwright install`
-3. アプリケーションを起動: `streamlit run app.py` （またはメインアプリファイル）
+3. アプリケーションを起動: `streamlit run streamlit_app.py`
 
 ## テストの実行
 

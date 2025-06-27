@@ -20,7 +20,7 @@ def test_weapon_generator_basic_flow(page: Page, base_url: str, evidence_dir: st
     )
 
     # 武器生成ボタンを見つけてクリック（Streamlitのボタン要素）
-    generate_button = page.get_by_text(re.compile(r"ランダム武器を生成"))
+    generate_button = page.get_by_text(re.compile(r"🎲.*ランダム武器を生成|ランダム武器を生成"))
     expect(generate_button).to_be_visible()
 
     generate_button.click()
@@ -30,7 +30,7 @@ def test_weapon_generator_basic_flow(page: Page, base_url: str, evidence_dir: st
     page.wait_for_timeout(1000)
 
     # 武器カードまたは武器結果が表示されることを確認
-    page.wait_for_selector(".weapon-card", timeout=30000)
+    page.wait_for_selector(".weapon-card", timeout=10000)
 
     page.screenshot(path=f"{evidence_dir}/03_weapons_generated.png")
 
@@ -45,7 +45,7 @@ def test_weapon_generator_multiple_generations(
 
     # 武器を複数回生成
     for i in range(3):
-        generate_button = page.get_by_text(re.compile(r"ランダム武器を生成"))
+        generate_button = page.get_by_text(re.compile(r"🎲.*ランダム武器を生成|ランダム武器を生成"))
         generate_button.click()
         page.wait_for_timeout(2000)  # 生成処理の待機時間を長くする
 
@@ -53,7 +53,7 @@ def test_weapon_generator_multiple_generations(
         page.screenshot(path=f"{evidence_dir}/04_generation_{i+1}.png")
 
     # ボタンがまだ機能することを確認
-    expect(page.get_by_text(re.compile(r"ランダム武器を生成"))).to_be_visible()
+    expect(page.get_by_text(re.compile(r"🎲.*ランダム武器を生成|ランダム武器を生成"))).to_be_visible()
 
 
 @pytest.mark.e2e
@@ -63,7 +63,7 @@ def test_page_accessibility(page: Page, base_url: str):
     page.wait_for_load_state("networkidle")
 
     # 必須要素の存在確認
-    expect(page.get_by_text(re.compile(r"ランダム武器を生成"))).to_be_visible()
+    expect(page.get_by_text(re.compile(r"🎲.*ランダム武器を生成|ランダム武器を生成"))).to_be_visible()
 
     # ページが適切な見出し構造を持つことを確認
     headings = page.locator("h1, h2, h3")

@@ -26,7 +26,7 @@ def page(browser):
 
 @pytest.fixture(scope="session")
 def base_url():
-    """環境変数からベースURLを取得、デフォルトはStreamlitアプリのURL"""  
+    """環境変数からベースURLを取得、デフォルトはStreamlitアプリのURL"""
     # MOCKOON_API_URLが設定されている場合はそれを優先、そうでなければBASE_URLを使用
     return os.getenv("MOCKOON_API_URL", os.getenv("BASE_URL", "http://localhost:8501"))
 

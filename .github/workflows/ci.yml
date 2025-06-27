@@ -34,5 +34,13 @@ jobs:
     - name: Import sorting check with isort
       run: isort --check-only --diff .
         
-    - name: Run tests with pytest
-      run: pytest -v
+    - name: Run unit tests with pytest
+      run: pytest -v -m "not e2e" --cov=. --cov-report=term-missing --cov-report=xml
+        
+    - name: Install Playwright browsers
+      run: playwright install chromium
+      
+    - name: Run e2e tests with Playwright
+      run: pytest -v -m "e2e" --maxfail=5
+      env:
+        MOCKOON_API_URL: http://localhost:3001

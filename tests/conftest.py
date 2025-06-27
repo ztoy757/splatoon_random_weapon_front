@@ -1,4 +1,5 @@
 import os
+
 import pytest
 from playwright.sync_api import sync_playwright
 
@@ -7,7 +8,7 @@ from playwright.sync_api import sync_playwright
 def browser():
     """環境変数に基づいてブラウザを設定"""
     headless = os.getenv("HEADLESS", "true").lower() == "true"
-    
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=headless)
         yield browser

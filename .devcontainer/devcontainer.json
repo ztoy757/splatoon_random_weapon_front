@@ -23,6 +23,6 @@
         "flake8.args": ["--max-line-length=88", "--extend-ignore=E203,W503"]
       }
     }
-  },
-  "remoteUser": "vscode"
+  }
+  // "remoteUser": "vscode"
 }

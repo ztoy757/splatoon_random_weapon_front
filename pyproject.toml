@@ -54,8 +54,11 @@ addopts = [
     "--strict-config",
     "--cov=.",
     "--cov-report=term-missing",
-    "--cov-report=html",
+    "--cov-report=html", 
     "--cov-report=xml",
+]
+markers = [
+    "e2e: エンドツーエンドテストとしてマーク",
 ]
 
 [tool.bandit]

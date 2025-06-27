@@ -34,5 +34,23 @@ jobs:
     - name: Import sorting check with isort
       run: isort --check-only --diff .
         
-    - name: Run tests with pytest
-      run: pytest -v
+    - name: Run unit tests with pytest
+      run: pytest -v -m "not e2e" --cov=. --cov-report=term-missing --cov-report=xml
+        
+    - name: Install Playwright browsers
+      run: playwright install --with-deps chromium
+      
+    - name: Start Streamlit app in background
+      run: |
+        streamlit run streamlit_app.py --server.port 8501 --server.headless true &
+        sleep 10
+        curl --retry 10 --retry-delay 3 --retry-connrefused http://localhost:8501
+      
+    - name: Create evidence directory
+      run: mkdir -p evidence
+      
+    - name: Run e2e tests with Playwright
+      run: pytest -v -m "e2e" --maxfail=5
+      env:
+        BASE_URL: http://localhost:8501 
+        HEADLESS: true

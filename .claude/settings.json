@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "black --check --diff . | isort --check-only ."
+            "command": "black --check --diff . && isort --check-only ."
           }
         ]
       }

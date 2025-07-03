@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "black --check . | isort --check-only . | pytest tests | pytest -m 'not e2e' --cov=tests --cov-fail-under=100"
+          }
+        ]
+      }
+    ]
+  }
+}

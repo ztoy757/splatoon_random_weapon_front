@@ -28,14 +28,5 @@ RUN python -m playwright install --with-deps chromium \
     && playwright install chromium
 
 # Install install claude-code CLI
-RUN npm install -g @anthropic-ai/claude-code
-
-# # Set default user
-# RUN useradd -m -s /bin/bash vscode && \
-#     chown -R vscode:vscode /workspace
-
-# USER vscode
-
-# # Set environment variables
-# ENV PYTHONPATH=/workspace
-# ENV NODE_ENV=development
+RUN npm install -g @anthropic-ai/claude-code \
+    && npm update -g @anthropic-ai/claude-code
